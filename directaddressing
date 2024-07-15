@@ -1,0 +1,82 @@
+/*
+Example: 0x300=10, 0x301=20, 0x302=30, 0x303=40, 0x304=50, 0x305=60, 0x306=70, 0x307=80, 0x308=90 and 0x309=100.(all numbers are in decimal)
+Output: R21=0x26(sum) and R22=2(carry value)
+*/
+.include "m32def.inc"
+ .org 0
+; store 10 bytes of data starting from location 0x300 to 0x309
+Ldi r16,10
+Sts 0X0300,r16
+Ldi r16,20
+Sts 0X0301,r16
+Ldi r16,30
+Sts 0X0302,r16
+Ldi r16,40
+Sts 0X0303,r16
+Ldi r16,50
+Sts 0X0304,r16
+Ldi r16,60
+Sts 0X0305,r16
+Ldi r16,70
+Sts 0X0306,r16
+Ldi r16,80
+Sts 0X0307,r16
+Ldi r16,90
+Sts 0X0308,r16
+Ldi r16,100
+Sts 0X0309,r16
+
+Ldi r21,0
+Ldi r22,0
+
+;read each byte from location 0x300 to 0x309 and add each value to R21 
+Lds r20,0X0300
+Add r21,r20
+Brcc L1
+Inc r22
+ L1:Lds r20,0x0301
+Add r21,r20
+Brcc L2
+Inc r22
+L2: Lds r20,0x0302
+Add r21,r20
+Brcc L3
+Inc r22
+L3: Lds r20,0x0303
+Add r21,r20
+Brcc L4
+Inc r22
+L4: Lds r20,0x304
+Add r21,r20
+Brcc L5
+Inc r22
+L5:Lds r20,0x0305
+Add r21,r20
+Brcc L6
+Inc r22
+L6:Lds r20,0x0306
+Add r21,r20
+Brcc L7
+Inc r22
+L7:Lds r20,0x0307
+Add r21,r20
+Brcc L8
+Inc r22
+L8:Lds r20,0x0308
+Add r21,r20
+Brcc L9
+Inc r22
+L9 Lds r20,0x0309
+Add r21,r20	;R21 will be having the lower byte result.
+Brcc here
+Inc r22		; R22 will have the higher byte(carry) result.
+here: rjmp here
+
+
+
+
+
+
+
+
+
