@@ -1,0 +1,32 @@
+/*
+Example-Input:r20=0x48
+     Output: memory location 0x301 = 0x34 and 0x302=0x38
+ */
+.equ packedbcd=0x300
+ .equ ascii1=0x301
+ .equ ascii2=0x302
+
+;initialize stack
+ ldi r16,high(ramend)
+ out sph,r16
+ ldi r16,low(ramend)
+ out spl,r16
+;store packed BCD at location 0x300
+ ldi r20,0x38
+ sts packedbcd,r20
+ call conversion	;call subroutine
+ here:jmp here     
+
+;subroutine
+ Conversion:
+              lds r20,packedbcd	;load packedBCD into R20
+		mov r21,r20
+		ldi r22,0x30
+andi r20,0x0f		;unpack BCD and obtain lowerbyte number
+		add r20,r22		;convert unpacked BCD into ASCII
+		sts ascii1,r20		;store first ASCII value into memory locatio 0x301
+		swap r21		
+		andi r21,0x0f		;unpack BCD and obtain higher byte number
+		add r21,r22		;convert unpacked BCD into ASCII
+		sts ascii2,r21		;store first ASCII value into memory locatio 0x302
+		ret			;return to main program
