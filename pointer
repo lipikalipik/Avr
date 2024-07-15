@@ -1,0 +1,59 @@
+/*
+Example-  Input:if n=6, 0x600=2, 0x601=3, 0x602=4, 0x603=7, 0x604=10 and 0x605=12
+Output: R20 = 2 (odd numbers) and R21 = 4 (even numbers)
+Note : n value can be anything
+*/
+.org 0
+ldi r16,6	;counter(n)
+ldi xl, 0X00	;lower byte of address
+ldi xh, 0X06	;higher byte of address
+ldi r20,0	;odd number counter
+ldi r21,0	;even number counter
+
+;store n=6 bytes of data from memory location 0x600 to 0x605
+ldi r17,2
+st x+,r17
+ldi r17,3
+st x+,r17
+ldi r17,4
+st x+,r17
+ldi r17,7
+st x+,r17
+ldi r17,10
+st x+,r17
+ldi r17,12
+st x+,r17
+
+;initialize the register x with address 0x600
+ldi xl, 0X00	;lower byte of address
+ldi xh, 0X06	;higher byte of address
+
+
+;obtain each byte from memory location 0x600 to 0x605
+l1: ld r18,x+
+ror r18		;obtain the last bit of each byte
+brcs l2			;jump to l2 if the last bit is 1
+inc r21			;increment even counter
+rjmp next
+l2: inc r20		;increment odd counter
+next: dec r16
+brne l1
+here: rjmp here 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
